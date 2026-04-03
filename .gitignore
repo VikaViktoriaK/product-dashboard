@@ -27,7 +27,7 @@ Thumbs.db
 !.vscode/extensions.json
 .idea/
 
-# 🔥 TypeScript
+#TypeScript
 *.tsbuildinfo
 
 #Vite
