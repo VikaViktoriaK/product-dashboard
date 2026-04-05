@@ -1,5 +1,14 @@
+import ProductsPage from "./pages/ProductsPage.tsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
+
 function App() {
-  return <h1 className="text-red-500 text-3xl">Tailwind works</h1>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ProductsPage />
+    </QueryClientProvider>
+  );
 }
 
 export default App;
