@@ -1,4 +1,3 @@
-// src/pages/ProductsPage.tsx
 import { useState } from "react";
 import type { ProductsQueryParams } from "../types/product";
 import { ProductFilters } from "../components/ProductFilters/ProductFilters";
@@ -14,7 +13,7 @@ const ProductsPage = () => {
 
   const handleApplyFilters = (newFilters: Partial<ProductsQueryParams>) => {
     setFilters(newFilters);
-    setSkip(0); // сброс пагинации при Apply
+    setSkip(0);
   };
 
   const handlePrev = () => setSkip((prev) => Math.max(prev - limit, 0));
@@ -75,7 +74,6 @@ const ProductsPage = () => {
             </tbody>
           </table>
 
-          {/* PAGINATION */}
           <div className="flex justify-between items-center mt-4">
             <button
               onClick={handlePrev}
