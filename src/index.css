@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+.container {
+    max-width: 1264px;
+    width: 100%;
+    margin: 0 auto;
+}
+
 .loader {
     width: fit-content;
     font-weight: bold;
