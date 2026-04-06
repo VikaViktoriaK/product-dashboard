@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import type { ProductsQueryParams } from "../types/product";
 import { ProductFilters } from "../components/ProductFilters/ProductFilters";
 import { useProductsQuery } from "../hooks/useProducts.ts";
 
 const ProductsPage = () => {
+  const navigate = useNavigate();
   const [filters, setFilters] = useState<Partial<ProductsQueryParams>>({});
   const [skip, setSkip] = useState(0);
   const limit = 10;
@@ -21,6 +23,10 @@ const ProductsPage = () => {
     setSkip((prev) =>
       prev + limit < (data?.total || 0) ? prev + limit : prev,
     );
+
+  const handleViewDetails = (id: number) => {
+    navigate(`/product/${id}`); // <-- переход на страницу деталей
+  };
 
   return (
     <div className="p-4">
@@ -65,7 +71,10 @@ const ProductsPage = () => {
                   <td className="p-3">{product.category}</td>
                   <td className="p-3">{product.stock}</td>
                   <td className="p-3">
-                    <button className="text-blue-500 hover:underline">
+                    <button
+                      className="text-blue-500 hover:underline"
+                      onClick={() => handleViewDetails(product.id)}
+                    >
                       Details
                     </button>
                   </td>
