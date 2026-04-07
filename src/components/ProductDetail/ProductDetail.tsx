@@ -10,11 +10,7 @@ export const ProductDetail: FC<ProductDetailProps> = ({
   product,
   similarProducts = [],
 }) => {
-  const [quantity, setQuantity] = useState<number>(1);
   const [selectedImage, setSelectedImage] = useState<string>(product.thumbnail);
-
-  const handleQuantityChange = (delta: number) =>
-    setQuantity((prev) => Math.max(1, prev + delta));
 
   return (
     <div className="p-4 max-w-6xl mx-auto">
@@ -61,22 +57,6 @@ export const ProductDetail: FC<ProductDetailProps> = ({
 
           <div className="text-gray-700">
             Rating: {product.rating.toFixed(1)}
-          </div>
-
-          <div className="flex items-center gap-2 mt-4">
-            <button
-              onClick={() => handleQuantityChange(-1)}
-              className="px-3 py-1 border rounded hover:bg-gray-100"
-            >
-              -
-            </button>
-            <span>{quantity}</span>
-            <button
-              onClick={() => handleQuantityChange(1)}
-              className="px-3 py-1 border rounded hover:bg-gray-100"
-            >
-              +
-            </button>
           </div>
 
           <table className="mt-6 w-full border border-gray-200 rounded">

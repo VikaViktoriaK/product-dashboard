@@ -25,7 +25,7 @@ const ProductsPage = () => {
     );
 
   const handleViewDetails = (id: number) => {
-    navigate(`/product/${id}`); // <-- переход на страницу деталей
+    navigate(`/product/${id}`);
   };
 
   return (

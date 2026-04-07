@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "../api/client";
 import type { ProductsResponse } from "../types/product";
 
-// 🔍 поиск
 export const useSearchProductsQuery = (search: string) => {
   return useQuery<ProductsResponse>({
     queryKey: ["products", "search", search],
@@ -13,6 +12,6 @@ export const useSearchProductsQuery = (search: string) => {
       );
       return data;
     },
-    enabled: !!search, // не дергаем API если пусто
+    enabled: !!search,
   });
 };
