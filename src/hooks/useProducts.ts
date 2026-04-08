@@ -17,18 +17,19 @@ export const useProductsQuery = (params: ProductsQueryParams) => {
       }
 
       const minPrice = params.minPrice;
-      if (minPrice !== undefined) {
+      if (minPrice != null) {
+        // undefined или null
         filtered = filtered.filter((p) => p.price >= minPrice);
       }
 
       const maxPrice = params.maxPrice;
-      if (maxPrice !== undefined) {
+      if (maxPrice != null) {
         filtered = filtered.filter((p) => p.price <= maxPrice);
       }
 
       const total = filtered.length;
-      const start = params.skip;
-      const end = params.skip + params.limit;
+      const start = params.skip ?? 0;
+      const end = start + (params.limit ?? 10);
       const paginated = filtered.slice(start, end);
 
       return { ...data, products: paginated, total };
