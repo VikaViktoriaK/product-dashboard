@@ -18,7 +18,6 @@ export const useProductsQuery = (params: ProductsQueryParams) => {
 
       const minPrice = params.minPrice;
       if (minPrice != null) {
-        // undefined или null
         filtered = filtered.filter((p) => p.price >= minPrice);
       }
 
