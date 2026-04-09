@@ -4,11 +4,13 @@ import type { Product } from "../../types/product";
 interface ProductDetailProps {
   product: Product;
   similarProducts?: Product[];
+  isLoadingSimilar: boolean;
 }
 
-export const ProductDetail: FC<ProductDetailProps> = ({
+const ProductDetail: FC<ProductDetailProps> = ({
   product,
   similarProducts = [],
+  isLoadingSimilar,
 }) => {
   const [selectedImage, setSelectedImage] = useState<string>(product.thumbnail);
 
@@ -86,10 +88,13 @@ export const ProductDetail: FC<ProductDetailProps> = ({
         </div>
       </div>
 
-      {similarProducts.length > 0 && (
-        <div className="mt-10">
-          <h2 className="text-2xl font-bold">Similar Products</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="mt-10">
+        <h2 className="text-2xl font-bold">Similar Products</h2>
+
+        {isLoadingSimilar ? (
+          <div className="loader"></div>
+        ) : similarProducts.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
             {similarProducts.map((p) => (
               <div
                 key={p.id}
@@ -105,8 +110,12 @@ export const ProductDetail: FC<ProductDetailProps> = ({
               </div>
             ))}
           </div>
-        </div>
-      )}
+        ) : (
+          <div className="mt-4 text-gray-500">No similar products found</div>
+        )}
+      </div>
     </div>
   );
 };
+
+export default ProductDetail;

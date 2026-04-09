@@ -1,29 +1,43 @@
 import { useParams } from "@tanstack/react-router";
-import { useProductsQuery } from "../hooks/useProducts.ts";
-import { ProductDetail } from "../components/ProductDetail/ProductDetail.tsx";
+import { useQuery } from "@tanstack/react-query";
+import { getProductById, getProducts } from "../api/products";
+import type { Product } from "../types/product";
+import ProductDetail from "../components/ProductDetail/ProductDetail.tsx";
 
 const ProductDetailPage = () => {
   const { id } = useParams({ from: "/product/$id" });
   const productId = Number(id);
 
-  const { data, isLoading, isError } = useProductsQuery({
-    limit: 100,
-    skip: 0,
+  const {
+    data: product,
+    isLoading: isProductLoading,
+    isError: isProductError,
+  } = useQuery({
+    queryKey: ["product", productId],
+    queryFn: () => getProductById(productId),
   });
 
-  if (isLoading) return <div className="loader"></div>;
-  if (isError)
-    return <div className="p-4 text-red-500">Error loading product</div>;
+  const { data: similarData, isLoading: isSimilarLoading } = useQuery({
+    queryKey: ["products", "similar", product?.category],
+    queryFn: () =>
+      getProducts({ category: product?.category, limit: 5, skip: 0 }),
+    enabled: !!product?.category,
+  });
 
-  const product = data?.products.find((p) => p.id === productId);
-  if (!product) return <div className="p-4">Product not found</div>;
+  if (isProductLoading)
+    return <div className="p-4 flex justify-center">Loading...</div>;
+  if (isProductError || !product)
+    return <div className="p-4 text-red-500">Product not found</div>;
 
-  const similarProducts = data?.products.filter(
-    (p) => p.category === product.category && p.id !== product.id,
-  );
+  const similarProducts =
+    similarData?.products.filter((p: Product) => p.id !== product.id) || [];
 
   return (
-    <ProductDetail product={product} similarProducts={similarProducts || []} />
+    <ProductDetail
+      product={product}
+      similarProducts={similarProducts}
+      isLoadingSimilar={isSimilarLoading}
+    />
   );
 };
 

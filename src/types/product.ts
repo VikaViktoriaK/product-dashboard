@@ -21,8 +21,9 @@ export interface ProductsResponse {
 }
 
 export interface ProductsQueryParams {
-  limit: number;
-  skip: number;
+  limit?: number;
+  skip?: number;
+  search?: string;
   category?: string;
   minPrice?: number;
   maxPrice?: number;
