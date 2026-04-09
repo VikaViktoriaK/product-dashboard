@@ -32,9 +32,7 @@ export const ProductSearch = ({ onSelect }: ProductSearchProps) => {
 
       {isOpen && debouncedSearch && (
         <div className="absolute top-full left-0 w-full bg-white border rounded shadow mt-1 z-10">
-          {isSearchLoading && (
-            <div className="p-2 text-gray-500">Loading...</div>
-          )}
+          {isSearchLoading && <div className="loader"></div>}
 
           {searchData?.products?.slice(0, 5).map((product: Product) => (
             <div

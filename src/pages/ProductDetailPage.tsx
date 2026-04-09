@@ -24,8 +24,7 @@ const ProductDetailPage = () => {
     enabled: !!product?.category,
   });
 
-  if (isProductLoading)
-    return <div className="p-4 flex justify-center">Loading...</div>;
+  if (isProductLoading) return <div className="loader"></div>;
   if (isProductError || !product)
     return <div className="p-4 text-red-500">Product not found</div>;
 
