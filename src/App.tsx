@@ -1,5 +1,15 @@
+import { RouterProvider } from "@tanstack/react-router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { router } from "./router/router.tsx";
+
+const queryClient = new QueryClient();
+
 function App() {
-  return <h1 className="text-red-500 text-3xl">Tailwind works</h1>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  );
 }
 
 export default App;
