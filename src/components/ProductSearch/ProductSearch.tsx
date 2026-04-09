@@ -1,7 +1,7 @@
 import type { Product } from "../../types/product";
 import { useState, type ChangeEvent } from "react";
 import { useSearchProductsQuery } from "../../hooks/useSearchProducts";
-import { useDebounce } from "../../hooks/useDebouns.ts";
+import { useDebounce } from "../../hooks/useDebounce.ts";
 
 interface ProductSearchProps {
   onSelect: (product: Product) => void;

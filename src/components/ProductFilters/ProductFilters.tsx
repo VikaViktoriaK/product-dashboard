@@ -1,4 +1,5 @@
 import { type FC, useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 
 interface ProductFiltersProps {
   onChange: (filters: {
@@ -14,6 +15,8 @@ export const ProductFilters: FC<ProductFiltersProps> = ({ onChange }) => {
   const [category, setCategory] = useState<string>("");
   const [minPrice, setMinPrice] = useState<number | "">("");
   const [maxPrice, setMaxPrice] = useState<number | "">("");
+
+  const navigate = useNavigate();
 
   const handleApply = () => {
     if (minPrice !== "" && maxPrice !== "" && minPrice > maxPrice) {
@@ -36,7 +39,7 @@ export const ProductFilters: FC<ProductFiltersProps> = ({ onChange }) => {
   };
 
   return (
-    <div className="flex items-end gap-4 mb-6 flex-wrap">
+    <div className="flex items-end gap-4 mb-6 flex-wrap w-full">
       <div className="flex flex-col">
         <label className="text-sm font-medium mb-1">Category</label>
         <select
@@ -53,6 +56,7 @@ export const ProductFilters: FC<ProductFiltersProps> = ({ onChange }) => {
         </select>
       </div>
 
+      {/* Секция выбора цены */}
       <div className="flex flex-col">
         <label className="text-sm font-medium mb-1">Price range</label>
         <div className="flex gap-2">
@@ -91,6 +95,15 @@ export const ProductFilters: FC<ProductFiltersProps> = ({ onChange }) => {
           className="border px-4 py-2 rounded hover:bg-gray-100"
         >
           Reset
+        </button>
+      </div>
+
+      <div className="ml-auto">
+        <button
+          onClick={() => navigate({ to: "/chat" })}
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          Customer Chat
         </button>
       </div>
     </div>

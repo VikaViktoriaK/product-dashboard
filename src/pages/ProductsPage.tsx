@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import type { ProductsQueryParams } from "../types/product";
 import { ProductFilters } from "../components/ProductFilters/ProductFilters";
 import { useProductsQuery } from "../hooks/useProducts.ts";
@@ -24,8 +24,11 @@ const ProductsPage = () => {
       prev + limit < (data?.total || 0) ? prev + limit : prev,
     );
 
-  const handleViewDetails = (id: number) => {
-    navigate(`/product/${id}`);
+  const handleViewDetails = async (id: number) => {
+    await navigate({
+      to: "/product/$id",
+      params: { id: String(id) },
+    });
   };
 
   return (
