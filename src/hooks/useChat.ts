@@ -14,10 +14,6 @@ export const useChat = () => {
     const socket = new WebSocket("wss://ws.ifelse.io");
     socketRef.current = socket;
 
-    socket.onopen = () => {
-      console.log("Socket opened");
-    };
-
     socket.onmessage = (e) => {
       const clientMessage: Message = {
         id: Date.now(),
@@ -25,10 +21,6 @@ export const useChat = () => {
         sender: "client",
       };
       setMessages((prev) => [...prev, clientMessage]);
-    };
-
-    socket.onclose = () => {
-      console.log("Socket closed");
     };
 
     return () => {
@@ -46,7 +38,6 @@ export const useChat = () => {
     };
 
     setMessages((prev) => [...prev, adminMessage]);
-
     socketRef.current?.send(text);
   };
 
