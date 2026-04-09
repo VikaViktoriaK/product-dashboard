@@ -66,7 +66,6 @@ export const ProductFilters: FC<ProductFiltersProps> = ({ onChange }) => {
 
   return (
     <div className="flex flex-col md:flex-row md:items-end gap-4 mb-6 w-full relative">
-      {/* 1. ПОИСК - занимает всю ширину на мобилках */}
       <div
         className="flex flex-col w-full md:flex-1 md:min-w-[250px] relative"
         ref={dropdownRef}
@@ -89,7 +88,6 @@ export const ProductFilters: FC<ProductFiltersProps> = ({ onChange }) => {
           )}
         </div>
 
-        {/* Выпадающий список */}
         {isSuggestionsOpen && debouncedSearch.trim().length > 1 && (
           <div className="absolute top-full left-0 right-0 bg-white border rounded-b shadow-xl z-50 mt-1 max-h-60 overflow-y-auto">
             {isSearching && (
@@ -139,7 +137,6 @@ export const ProductFilters: FC<ProductFiltersProps> = ({ onChange }) => {
         )}
       </div>
 
-      {/* Группа КАТЕГОРИЯ и ЦЕНА */}
       <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
         <div className="flex flex-col w-full md:w-40">
           <label className="text-sm font-medium mb-1">Category</label>
@@ -184,7 +181,6 @@ export const ProductFilters: FC<ProductFiltersProps> = ({ onChange }) => {
         </div>
       </div>
 
-      {/* 3. КНОПКИ Apply/Reset */}
       <div className="flex gap-2 w-full md:w-auto">
         <button
           onClick={handleApply}
@@ -200,7 +196,6 @@ export const ProductFilters: FC<ProductFiltersProps> = ({ onChange }) => {
         </button>
       </div>
 
-      {/* 4. КНОПКА ЧАТА */}
       <div className="w-full md:ml-auto md:w-auto">
         <button
           onClick={() => navigate({ to: "/chat" })}
