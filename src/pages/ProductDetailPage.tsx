@@ -1,9 +1,9 @@
-import { useParams } from "react-router-dom";
+import { useParams } from "@tanstack/react-router";
 import { useProductsQuery } from "../hooks/useProducts.ts";
 import { ProductDetail } from "../components/ProductDetail/ProductDetail.tsx";
 
 const ProductDetailPage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams({ from: "/product/$id" });
   const productId = Number(id);
 
   const { data, isLoading, isError } = useProductsQuery({
@@ -11,8 +11,9 @@ const ProductDetailPage = () => {
     skip: 0,
   });
 
-  if (isLoading) return <div className="p-4">Loading...</div>;
-  if (isError) return <div className="p-4">Error loading product</div>;
+  if (isLoading) return <div className="loader"></div>;
+  if (isError)
+    return <div className="p-4 text-red-500">Error loading product</div>;
 
   const product = data?.products.find((p) => p.id === productId);
   if (!product) return <div className="p-4">Product not found</div>;

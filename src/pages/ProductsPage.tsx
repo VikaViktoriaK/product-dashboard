@@ -37,7 +37,7 @@ const ProductsPage = () => {
 
       <ProductFilters onChange={handleApplyFilters} />
 
-      {isLoading && <div className="loader">Loading...</div>}
+      {isLoading && <div className="loader"></div>}
       {isError && <div>Error loading products</div>}
       {!isLoading && data?.products.length === 0 && (
         <div>No products found</div>
