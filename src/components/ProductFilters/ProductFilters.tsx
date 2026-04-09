@@ -65,9 +65,10 @@ export const ProductFilters: FC<ProductFiltersProps> = ({ onChange }) => {
   };
 
   return (
-    <div className="flex items-end gap-4 mb-6 flex-wrap w-full relative">
+    <div className="flex flex-col md:flex-row md:items-end gap-4 mb-6 w-full relative">
+      {/* 1. ПОИСК - занимает всю ширину на мобилках */}
       <div
-        className="flex flex-col flex-1 min-w-[250px] relative"
+        className="flex flex-col w-full md:flex-1 md:min-w-[250px] relative"
         ref={dropdownRef}
       >
         <label className="text-sm font-medium mb-1">Search Products</label>
@@ -88,6 +89,7 @@ export const ProductFilters: FC<ProductFiltersProps> = ({ onChange }) => {
           )}
         </div>
 
+        {/* Выпадающий список */}
         {isSuggestionsOpen && debouncedSearch.trim().length > 1 && (
           <div className="absolute top-full left-0 right-0 bg-white border rounded-b shadow-xl z-50 mt-1 max-h-60 overflow-y-auto">
             {isSearching && (
@@ -95,7 +97,6 @@ export const ProductFilters: FC<ProductFiltersProps> = ({ onChange }) => {
                 Searching...
               </div>
             )}
-
             {!isSearching &&
               suggestions?.products &&
               suggestions.products.length > 0 &&
@@ -127,7 +128,6 @@ export const ProductFilters: FC<ProductFiltersProps> = ({ onChange }) => {
                   </div>
                 </button>
               ))}
-
             {!isSearching &&
               suggestions?.products &&
               suggestions.products.length === 0 && (
@@ -139,67 +139,72 @@ export const ProductFilters: FC<ProductFiltersProps> = ({ onChange }) => {
         )}
       </div>
 
-      <div className="flex flex-col">
-        <label className="text-sm font-medium mb-1">Category</label>
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="border p-2 rounded w-40"
-        >
-          <option value="">All</option>
-          {categories.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat}
-            </option>
-          ))}
-        </select>
-      </div>
+      {/* Группа КАТЕГОРИЯ и ЦЕНА */}
+      <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
+        <div className="flex flex-col w-full md:w-40">
+          <label className="text-sm font-medium mb-1">Category</label>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="border p-2 rounded w-full"
+          >
+            <option value="">All</option>
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <div className="flex flex-col">
-        <label className="text-sm font-medium mb-1">Price range</label>
-        <div className="flex gap-2">
-          <input
-            type="number"
-            placeholder="From"
-            value={minPrice}
-            onChange={(e) =>
-              setMinPrice(e.target.value === "" ? "" : Number(e.target.value))
-            }
-            className="border p-2 rounded w-24"
-            min={0}
-          />
-          <input
-            type="number"
-            placeholder="To"
-            value={maxPrice}
-            onChange={(e) =>
-              setMaxPrice(e.target.value === "" ? "" : Number(e.target.value))
-            }
-            className="border p-2 rounded w-24"
-            min={0}
-          />
+        <div className="flex flex-col w-full">
+          <label className="text-sm font-medium mb-1">Price range</label>
+          <div className="flex gap-2">
+            <input
+              type="number"
+              placeholder="From"
+              value={minPrice}
+              onChange={(e) =>
+                setMinPrice(e.target.value === "" ? "" : Number(e.target.value))
+              }
+              className="border p-2 rounded w-full md:w-24"
+              min={0}
+            />
+            <input
+              type="number"
+              placeholder="To"
+              value={maxPrice}
+              onChange={(e) =>
+                setMaxPrice(e.target.value === "" ? "" : Number(e.target.value))
+              }
+              className="border p-2 rounded w-full md:w-24"
+              min={0}
+            />
+          </div>
         </div>
       </div>
 
-      <div className="flex gap-2">
+      {/* 3. КНОПКИ Apply/Reset */}
+      <div className="flex gap-2 w-full md:w-auto">
         <button
           onClick={handleApply}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="flex-1 md:flex-none bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
         >
           Apply
         </button>
         <button
           onClick={handleReset}
-          className="border px-4 py-2 rounded hover:bg-gray-100"
+          className="flex-1 md:flex-none border px-4 py-2 rounded hover:bg-gray-100"
         >
           Reset
         </button>
       </div>
 
-      <div className="ml-auto">
+      {/* 4. КНОПКА ЧАТА */}
+      <div className="w-full md:ml-auto md:w-auto">
         <button
           onClick={() => navigate({ to: "/chat" })}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
         >
           Customer Chat
         </button>
