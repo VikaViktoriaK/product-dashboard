@@ -16,7 +16,9 @@ import { productQueryOptions, productsQueryOptions } from "../api/queryOptions";
 
 const AppLayout = () => {
   const navigate = useNavigate();
-  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const pathname = useRouterState({
+    select: (state) => state.location.pathname,
+  });
   const isProductsPage = pathname === "/";
 
   return (
@@ -39,16 +41,20 @@ const AppLayout = () => {
             <Link
               to="/"
               preload="intent"
-              activeProps={{ className: "bg-blue-500 text-white border-blue-500" }}
-              className="px-3 py-2 border rounded-lg hover:bg-gray-100 transition-colors text-sm"
+              activeProps={{
+                className: "bg-blue-500 text-white border-blue-500",
+              }}
+              className="px-3 py-2 border rounded-lg hover:bg-blue-600 transition-colors text-sm"
             >
               Products
             </Link>
             <Link
               to="/chat"
               preload="intent"
-              activeProps={{ className: "bg-blue-500 text-white border-blue-500" }}
-              className="px-3 py-2 border rounded-lg hover:bg-gray-100 transition-colors text-sm"
+              activeProps={{
+                className: "bg-blue-500 text-white border-blue-500",
+              }}
+              className="px-3 py-2 border rounded-lg hover:bg-blue-600 transition-colors text-sm"
             >
               Chat
             </Link>
@@ -63,9 +69,7 @@ const AppLayout = () => {
 };
 
 const rootRoute = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  component: () => (
-    <AppLayout />
-  ),
+  component: () => <AppLayout />,
 });
 
 const indexRoute = createRoute({
@@ -73,7 +77,9 @@ const indexRoute = createRoute({
   path: "/",
   component: ProductsPage,
   loader: ({ context }) =>
-    context.queryClient.ensureQueryData(productsQueryOptions({ limit: 30, skip: 0 })),
+    context.queryClient.ensureQueryData(
+      productsQueryOptions({ limit: 30, skip: 0 }),
+    ),
 });
 
 const productDetailRoute = createRoute({
