@@ -195,15 +195,6 @@ export const ProductFilters: FC<ProductFiltersProps> = ({ onChange }) => {
           Reset
         </button>
       </div>
-
-      <div className="w-full md:ml-auto md:w-auto">
-        <button
-          onClick={() => navigate({ to: "/chat" })}
-          className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
-        >
-          Customer Chat
-        </button>
-      </div>
     </div>
   );
 };

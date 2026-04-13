@@ -1,4 +1,5 @@
-import { type FC, useState } from "react";
+import { type FC, useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import type { Product } from "../../types/product";
 
 interface ProductDetailProps {
@@ -13,6 +14,9 @@ const ProductDetail: FC<ProductDetailProps> = ({
   isLoadingSimilar,
 }) => {
   const [selectedImage, setSelectedImage] = useState<string>(product.thumbnail);
+  useEffect(() => {
+    setSelectedImage(product.thumbnail);
+  }, [product.id, product.thumbnail]);
 
   return (
     <div className="p-4 max-w-6xl mx-auto">
@@ -96,9 +100,12 @@ const ProductDetail: FC<ProductDetailProps> = ({
         ) : similarProducts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
             {similarProducts.map((p) => (
-              <div
+              <Link
                 key={p.id}
-                className="border rounded p-4 hover:shadow-lg transition"
+                to="/product/$id"
+                params={{ id: String(p.id) }}
+                preload="intent"
+                className="border rounded p-4 hover:shadow-lg transition block"
               >
                 <img
                   src={p.thumbnail}
@@ -107,7 +114,7 @@ const ProductDetail: FC<ProductDetailProps> = ({
                 />
                 <h3 className="font-semibold">{p.title}</h3>
                 <p className="text-gray-700">${p.price.toFixed(2)}</p>
-              </div>
+              </Link>
             ))}
           </div>
         ) : (

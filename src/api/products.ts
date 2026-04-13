@@ -5,11 +5,21 @@ import type {
 } from "../types/product.ts";
 import { apiClient } from "./client.ts";
 
+interface ProductsRequestParams {
+  limit?: number;
+  skip?: number;
+  search?: string;
+  category?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  q?: string;
+}
+
 export const getProducts = async (
   params: ProductsQueryParams,
 ): Promise<ProductsResponse> => {
   let url = "/products";
-  const requestParams: any = { ...params };
+  const requestParams: ProductsRequestParams = { ...params };
 
   if (params.search) {
     url = "/products/search";

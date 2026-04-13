@@ -1,14 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { apiClient } from "../api/client.ts";
-import type { ProductsQueryParams, ProductsResponse } from "../types/product";
+import type { ProductsQueryParams } from "../types/product";
+import { productsQueryOptions } from "../api/queryOptions";
 
 export const useProductsQuery = (params: ProductsQueryParams) => {
   return useQuery({
-    queryKey: ["products", params],
-    queryFn: async (): Promise<ProductsResponse> => {
-      const { data } = await apiClient.get<ProductsResponse>("/products");
-      return data;
-    },
+    ...productsQueryOptions(params),
     select: (data) => {
       let filtered = data.products;
 
@@ -26,12 +22,7 @@ export const useProductsQuery = (params: ProductsQueryParams) => {
         filtered = filtered.filter((p) => p.price <= maxPrice);
       }
 
-      const total = filtered.length;
-      const start = params.skip ?? 0;
-      const end = start + (params.limit ?? 10);
-      const paginated = filtered.slice(start, end);
-
-      return { ...data, products: paginated, total };
+      return { ...data, products: filtered, total: filtered.length };
     },
   });
 };

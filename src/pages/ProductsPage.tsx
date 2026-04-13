@@ -1,35 +1,29 @@
 import { useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import type { ProductsQueryParams } from "../types/product";
 import { ProductFilters } from "../components/ProductFilters/ProductFilters";
 import { useProductsQuery } from "../hooks/useProducts.ts";
 
 const ProductsPage = () => {
-  const navigate = useNavigate();
   const [filters, setFilters] = useState<Partial<ProductsQueryParams>>({});
   const [skip, setSkip] = useState(0);
-  const limit = 10;
+  const pageSize = 10;
+  const fetchLimit = 30;
 
-  const params: ProductsQueryParams = { ...filters, skip, limit };
+  const params: ProductsQueryParams = { ...filters, skip: 0, limit: fetchLimit };
   const { data, isLoading, isError } = useProductsQuery(params);
+  const paginatedProducts = data?.products.slice(skip, skip + pageSize) ?? [];
 
   const handleApplyFilters = (newFilters: Partial<ProductsQueryParams>) => {
     setFilters(newFilters);
     setSkip(0);
   };
 
-  const handlePrev = () => setSkip((prev) => Math.max(prev - limit, 0));
+  const handlePrev = () => setSkip((prev) => Math.max(prev - pageSize, 0));
   const handleNext = () =>
     setSkip((prev) =>
-      prev + limit < (data?.total || 0) ? prev + limit : prev,
+      prev + pageSize < (data?.total || 0) ? prev + pageSize : prev,
     );
-
-  const handleViewDetails = async (id: number) => {
-    await navigate({
-      to: "/product/$id",
-      params: { id: String(id) },
-    });
-  };
 
   return (
     <div className="p-4">
@@ -59,7 +53,7 @@ const ProductsPage = () => {
             </thead>
 
             <tbody>
-              {data.products.map((product) => (
+              {paginatedProducts.map((product) => (
                 <tr key={product.id} className="border-t hover:bg-gray-50">
                   <td className="p-3">
                     <img
@@ -74,12 +68,14 @@ const ProductsPage = () => {
                   <td className="p-3">{product.category}</td>
                   <td className="p-3">{product.stock}</td>
                   <td className="p-3">
-                    <button
+                    <Link
+                      to="/product/$id"
+                      params={{ id: String(product.id) }}
+                      preload="intent"
                       className="text-blue-500 hover:underline"
-                      onClick={() => handleViewDetails(product.id)}
                     >
                       Details
-                    </button>
+                    </Link>
                   </td>
                 </tr>
               ))}
@@ -96,12 +92,12 @@ const ProductsPage = () => {
             </button>
 
             <span>
-              {skip + 1} - {Math.min(skip + limit, data.total)} of {data.total}
+              {skip + 1} - {Math.min(skip + pageSize, data.total)} of {data.total}
             </span>
 
             <button
               onClick={handleNext}
-              disabled={skip + limit >= data.total}
+              disabled={skip + pageSize >= data.total}
               className="px-4 py-2 border rounded hover:bg-gray-100 disabled:opacity-50"
             >
               Next
