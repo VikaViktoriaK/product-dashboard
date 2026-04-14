@@ -6,40 +6,97 @@ type Message = {
   sender: "me" | "client";
 };
 
+type ConnectionStatus =
+  | "connecting"
+  | "open"
+  | "closing"
+  | "closed"
+  | "error";
+
 export const useChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [connectionStatus, setConnectionStatus] =
+    useState<ConnectionStatus>("connecting");
+  const [connectionError, setConnectionError] = useState<string | null>(null);
   const socketRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
     const socket = new WebSocket("wss://ws.ifelse.io");
     socketRef.current = socket;
 
-    socket.onmessage = (e) => {
+    const handleOpen = () => {
+      setConnectionStatus("open");
+      setConnectionError(null);
+    };
+
+    const handleMessage = (e: MessageEvent) => {
       const clientMessage: Message = {
         id: Date.now(),
-        text: e.data,
+        text: String(e.data),
         sender: "client",
       };
       setMessages((prev) => [...prev, clientMessage]);
     };
 
+    const handleClose = () => {
+      setConnectionStatus("closed");
+    };
+
+    const handleError = () => {
+      setConnectionStatus("error");
+      setConnectionError("WebSocket connection error");
+    };
+
+    socket.addEventListener("open", handleOpen);
+    socket.addEventListener("message", handleMessage);
+    socket.addEventListener("close", handleClose);
+    socket.addEventListener("error", handleError);
+
     return () => {
-      socket.close();
+      socket.removeEventListener("open", handleOpen);
+      socket.removeEventListener("message", handleMessage);
+      socket.removeEventListener("close", handleClose);
+      socket.removeEventListener("error", handleError);
+
+      setConnectionStatus("closing");
+      if (
+        socket.readyState === WebSocket.OPEN ||
+        socket.readyState === WebSocket.CONNECTING
+      ) {
+        socket.close();
+      }
+
+      if (socketRef.current === socket) {
+        socketRef.current = null;
+      }
     };
   }, []);
 
   const sendMessage = (text: string) => {
-    if (!text.trim()) return;
+    const trimmedText = text.trim();
+    if (!trimmedText) return;
+
+    const socket = socketRef.current;
+    if (!socket || socket.readyState !== WebSocket.OPEN) {
+      setConnectionError("Cannot send message while socket is not connected");
+      return;
+    }
 
     const adminMessage: Message = {
       id: Date.now(),
-      text,
+      text: trimmedText,
       sender: "me",
     };
 
     setMessages((prev) => [...prev, adminMessage]);
-    socketRef.current?.send(text);
+    socket.send(trimmedText);
   };
 
-  return { messages, setMessages, sendMessage };
+  return {
+    messages,
+    setMessages,
+    sendMessage,
+    connectionStatus,
+    connectionError,
+  };
 };
