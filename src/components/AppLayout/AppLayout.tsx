@@ -5,14 +5,15 @@ import {
   useRouterState,
 } from "@tanstack/react-router";
 import Container from "../Container/Container";
-import { ROUTE_PATHS } from "../../router/routePaths";
+import { Route as ProductsRoute } from "../../routes/index";
+import { Route as ChatRoute } from "../../routes/chat";
 
 const AppLayout = () => {
   const navigate = useNavigate();
   const pathname = useRouterState({
     select: (state) => state.location.pathname,
   });
-  const isProductsPage = pathname === ROUTE_PATHS.products;
+  const isProductsPage = pathname === ProductsRoute.to;
 
   return (
     <Container className="px-4 py-4 min-h-screen">
@@ -20,7 +21,7 @@ const AppLayout = () => {
         <div className="mb-4">
           <button
             type="button"
-            onClick={() => navigate({ to: ROUTE_PATHS.products })}
+            onClick={() => navigate({ to: ProductsRoute.to })}
             className="px-3 py-2 border rounded-lg hover:bg-gray-100 transition-colors"
           >
             ← Back to products
@@ -32,7 +33,7 @@ const AppLayout = () => {
         <aside className="border rounded-xl p-3 bg-white shadow-sm h-fit">
           <nav className="flex md:flex-col gap-2">
             <Link
-              to={ROUTE_PATHS.products}
+              to={ProductsRoute.to}
               preload="intent"
               className="px-3 py-2 border rounded-lg hover:bg-blue-600 transition-colors text-sm"
               activeProps={{
@@ -43,7 +44,7 @@ const AppLayout = () => {
             </Link>
 
             <Link
-              to={ROUTE_PATHS.chat}
+              to={ChatRoute.to}
               preload="intent"
               className="px-3 py-2 border rounded-lg hover:bg-blue-600 transition-colors text-sm"
               activeProps={{

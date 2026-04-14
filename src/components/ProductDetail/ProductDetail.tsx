@@ -1,7 +1,7 @@
 import { type FC, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import type { Product } from "../../types/product";
-import { ROUTE_PATHS } from "../../router/routePaths";
+import { Route as ProductDetailRoute } from "../../routes/product.$id";
 
 interface ProductDetailProps {
   product: Product;
@@ -63,30 +63,32 @@ const ProductDetail: FC<ProductDetailProps> = ({
             Rating: {product.rating.toFixed(1)}
           </div>
 
-          <table className="mt-6 w-full border border-gray-200 rounded">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="text-left p-2 border">Feature</th>
-                <th className="text-left p-2 border">Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="hover:bg-gray-50">
-                <td className="border p-2">Category</td>
-                <td className="border p-2">{product.category}</td>
-              </tr>
-              {product.brand && (
+          <div className="mt-6 overflow-x-auto">
+            <table className="min-w-[360px] w-full border border-gray-200 rounded">
+              <thead className="bg-gray-100">
                 <tr className="hover:bg-gray-50">
-                  <td className="border p-2">Brand</td>
-                  <td className="border p-2">{product.brand}</td>
+                  <th className="text-left p-2 border">Feature</th>
+                  <th className="text-left p-2 border">Value</th>
                 </tr>
-              )}
-              <tr className="hover:bg-gray-50">
-                <td className="border p-2">Stock</td>
-                <td className="border p-2">{product.stock}</td>
-              </tr>
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                <tr className="hover:bg-gray-50">
+                  <td className="border p-2">Category</td>
+                  <td className="border p-2">{product.category}</td>
+                </tr>
+                {product.brand && (
+                  <tr className="hover:bg-gray-50">
+                    <td className="border p-2">Brand</td>
+                    <td className="border p-2">{product.brand}</td>
+                  </tr>
+                )}
+                <tr className="hover:bg-gray-50">
+                  <td className="border p-2">Stock</td>
+                  <td className="border p-2">{product.stock}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
@@ -100,7 +102,7 @@ const ProductDetail: FC<ProductDetailProps> = ({
             {similarProducts.map((p) => (
               <Link
                 key={p.id}
-                to={ROUTE_PATHS.productDetail}
+                to={ProductDetailRoute.to}
                 params={{ id: String(p.id) }}
                 preload="intent"
                 className="border rounded p-4 hover:shadow-lg transition block"

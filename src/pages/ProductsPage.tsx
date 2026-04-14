@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import type { ProductsQueryParams } from "../types/product";
 import { ProductFilters } from "../components/ProductFilters/ProductFilters";
 import { useProductsQuery } from "../hooks/useProducts.ts";
-import { ROUTE_PATHS } from "../router/routePaths";
+import { Route as ProductDetailRoute } from "../routes/product.$id";
 
 const ProductsPage = () => {
   const [filters, setFilters] = useState<Partial<ProductsQueryParams>>({});
@@ -40,48 +40,50 @@ const ProductsPage = () => {
 
       {data && data.products.length > 0 && (
         <>
-          <table className="w-full border border-gray-200 rounded-lg overflow-hidden">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="text-left p-3">Image</th>
-                <th className="text-left p-3">Title</th>
-                <th className="text-left p-3">Price</th>
-                <th className="text-left p-3">Rating</th>
-                <th className="text-left p-3">Category</th>
-                <th className="text-left p-3">Stock</th>
-                <th className="text-left p-3">Details</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {paginatedProducts.map((product) => (
-                <tr key={product.id} className="border-t hover:bg-gray-50">
-                  <td className="p-3">
-                    <img
-                      src={product.thumbnail}
-                      alt={product.title}
-                      className="w-12 h-12 object-cover rounded"
-                    />
-                  </td>
-                  <td className="p-3">{product.title}</td>
-                  <td className="p-3 font-medium">${product.price}</td>
-                  <td className="p-3">{product.rating}</td>
-                  <td className="p-3">{product.category}</td>
-                  <td className="p-3">{product.stock}</td>
-                  <td className="p-3">
-                    <Link
-                      to={ROUTE_PATHS.productDetail}
-                      params={{ id: String(product.id) }}
-                      preload="intent"
-                      className="text-blue-500 hover:underline"
-                    >
-                      Details
-                    </Link>
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="min-w-[720px] w-full border border-gray-200 rounded-lg overflow-hidden">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="text-left p-3">Image</th>
+                  <th className="text-left p-3">Title</th>
+                  <th className="text-left p-3">Price</th>
+                  <th className="text-left p-3">Rating</th>
+                  <th className="text-left p-3">Category</th>
+                  <th className="text-left p-3">Stock</th>
+                  <th className="text-left p-3">Details</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+
+              <tbody>
+                {paginatedProducts.map((product) => (
+                  <tr key={product.id} className="border-t hover:bg-gray-50">
+                    <td className="p-3">
+                      <img
+                        src={product.thumbnail}
+                        alt={product.title}
+                        className="w-12 h-12 object-cover rounded"
+                      />
+                    </td>
+                    <td className="p-3">{product.title}</td>
+                    <td className="p-3 font-medium">${product.price}</td>
+                    <td className="p-3">{product.rating}</td>
+                    <td className="p-3">{product.category}</td>
+                    <td className="p-3">{product.stock}</td>
+                    <td className="p-3">
+                      <Link
+                        to={ProductDetailRoute.to}
+                        params={{ id: String(product.id) }}
+                        preload="intent"
+                        className="text-blue-500 hover:underline"
+                      >
+                        Details
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
           <div className="flex justify-between items-center mt-4">
             <button

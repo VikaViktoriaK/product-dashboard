@@ -1,4 +1,3 @@
-import { useParams } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import type { Product } from "../types/product";
 import ProductDetail from "../components/ProductDetail/ProductDetail.tsx";
@@ -6,9 +5,10 @@ import {
   productQueryOptions,
   similarProductsQueryOptions,
 } from "../api/queryOptions";
+import { Route as ProductDetailRoute } from "../routes/product.$id";
 
 const ProductDetailPage = () => {
-  const { id } = useParams({ from: "/product/$id" });
+  const { id } = ProductDetailRoute.useParams();
   const productId = Number(id);
 
   const {

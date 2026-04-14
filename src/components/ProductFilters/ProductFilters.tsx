@@ -3,7 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { productsQueryOptions } from "../../api/queryOptions";
 import { useDebounce } from "../../hooks/useDebounce";
-import { ROUTE_PATHS } from "../../router/routePaths";
+import { Route as ProductDetailRoute } from "../../routes/product.$id";
 
 interface ProductFiltersProps {
   onChange: (filters: {
@@ -115,7 +115,7 @@ export const ProductFilters: FC<ProductFiltersProps> = ({ onChange }) => {
                   className="w-full flex items-center gap-3 p-2 hover:bg-gray-100 border-b last:border-none text-left"
                   onClick={() => {
                     navigate({
-                      to: ROUTE_PATHS.productDetail,
+                      to: ProductDetailRoute.to,
                       params: { id: String(product.id) },
                     });
                     setIsSuggestionsOpen(false);
