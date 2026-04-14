@@ -72,14 +72,14 @@ export const useChat = () => {
     };
   }, []);
 
-  const sendMessage = (text: string) => {
+  const sendMessage = (text: string): boolean => {
     const trimmedText = text.trim();
-    if (!trimmedText) return;
+    if (!trimmedText) return false;
 
     const socket = socketRef.current;
     if (!socket || socket.readyState !== WebSocket.OPEN) {
       setConnectionError("Cannot send message while socket is not connected");
-      return;
+      return false;
     }
 
     const adminMessage: Message = {
@@ -90,6 +90,7 @@ export const useChat = () => {
 
     setMessages((prev) => [...prev, adminMessage]);
     socket.send(trimmedText);
+    return true;
   };
 
   return {
@@ -98,5 +99,6 @@ export const useChat = () => {
     sendMessage,
     connectionStatus,
     connectionError,
+    isConnected: connectionStatus === "open",
   };
 };

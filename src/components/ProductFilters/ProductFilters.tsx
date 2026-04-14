@@ -1,4 +1,4 @@
-import { type FC, useEffect, useMemo, useRef, useState } from "react";
+import { type FC, useEffect, useRef, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { productsQueryOptions } from "../../api/queryOptions";
@@ -32,22 +32,18 @@ export const ProductFilters: FC<ProductFiltersProps> = ({ onChange }) => {
     enabled: debouncedSearch.trim().length > 1,
   });
 
-  const priceError = useMemo(() => {
-    if (minPrice === "" || maxPrice === "") {
-      return null;
-    }
-
-    return minPrice > maxPrice
+  const priceError =
+    minPrice !== "" && maxPrice !== "" && minPrice > maxPrice
       ? "Min price cannot be greater than max price"
       : null;
-  }, [minPrice, maxPrice]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      if (!(event.target instanceof Node)) {
+        return;
+      }
+
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsSuggestionsOpen(false);
       }
     };

@@ -1,3 +1,4 @@
+import { useParams } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import type { Product } from "../types/product";
 import ProductDetail from "../components/ProductDetail/ProductDetail.tsx";
@@ -5,10 +6,8 @@ import {
   productQueryOptions,
   similarProductsQueryOptions,
 } from "../api/queryOptions";
-import { Route as ProductDetailRoute } from "../routes/product.$id";
-
 const ProductDetailPage = () => {
-  const { id } = ProductDetailRoute.useParams();
+  const { id } = useParams({ from: "/product/$id" });
   const productId = Number(id);
 
   const {
@@ -20,9 +19,7 @@ const ProductDetailPage = () => {
   });
 
   const { data: similarData, isLoading: isSimilarLoading } = useQuery({
-    ...(product?.category
-      ? similarProductsQueryOptions(product.category)
-      : similarProductsQueryOptions("")),
+    ...similarProductsQueryOptions(product?.category ?? ""),
     enabled: !!product?.category,
   });
 

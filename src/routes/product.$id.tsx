@@ -1,6 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import ProductDetailPage from "../pages/ProductDetailPage";
-import { productQueryOptions, productsQueryOptions } from "../api/queryOptions";
+import {
+  productQueryOptions,
+  similarProductsQueryOptions,
+} from "../api/queryOptions";
 
 export const Route = createFileRoute("/product/$id")({
   component: ProductDetailPage,
@@ -12,7 +15,7 @@ export const Route = createFileRoute("/product/$id")({
 
     if (product.category) {
       await context.queryClient.ensureQueryData(
-        productsQueryOptions({ category: product.category, limit: 5, skip: 0 }),
+        similarProductsQueryOptions(product.category),
       );
     }
 

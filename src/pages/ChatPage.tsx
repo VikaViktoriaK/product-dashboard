@@ -3,7 +3,13 @@ import { useChat } from "../hooks/useChat";
 
 const ChatPage = () => {
   const [input, setInput] = useState("");
-  const { messages, sendMessage } = useChat();
+  const {
+    messages,
+    sendMessage,
+    connectionStatus,
+    connectionError,
+    isConnected,
+  } = useChat();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -17,8 +23,10 @@ const ChatPage = () => {
 
   const handleSend = () => {
     if (!input.trim()) return;
-    sendMessage(input);
-    setInput("");
+    const wasSent = sendMessage(input);
+    if (wasSent) {
+      setInput("");
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -28,6 +36,23 @@ const ChatPage = () => {
   return (
     <div className="p-4 max-w-xl mx-auto h-screen flex flex-col">
       <h1 className="text-2xl font-bold mb-4">Customer Support Chat</h1>
+      <p className="mb-2 text-sm text-gray-600">
+        Status:{" "}
+        <span
+          className={
+            isConnected
+              ? "text-green-600 font-medium"
+              : connectionStatus === "error"
+                ? "text-red-600 font-medium"
+                : "text-yellow-600 font-medium"
+          }
+        >
+          {connectionStatus}
+        </span>
+      </p>
+      {connectionError && (
+        <p className="mb-2 text-sm text-red-600">{connectionError}</p>
+      )}
 
       <div className="flex-1 border rounded p-3 overflow-y-auto mb-4 bg-gray-50 shadow-inner">
         {messages.length === 0 && (
@@ -65,7 +90,8 @@ const ChatPage = () => {
         />
         <button
           onClick={handleSend}
-          className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors font-medium"
+          disabled={!isConnected || !input.trim()}
+          className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Send
         </button>

@@ -6,8 +6,13 @@ import "./index.css";
 import { router } from "./router/router";
 
 const queryClient = new QueryClient();
+const rootElement = document.getElementById("root");
 
-createRoot(document.getElementById('root')!).render(
+if (!rootElement) {
+  throw new Error("Root element '#root' was not found");
+}
+
+createRoot(rootElement).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} context={{ queryClient }} />
