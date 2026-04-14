@@ -1,4 +1,4 @@
-import { type FC, useEffect, useState } from "react";
+import { type FC, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import type { Product } from "../../types/product";
 
@@ -14,9 +14,6 @@ const ProductDetail: FC<ProductDetailProps> = ({
   isLoadingSimilar,
 }) => {
   const [selectedImage, setSelectedImage] = useState<string>(product.thumbnail);
-  useEffect(() => {
-    setSelectedImage(product.thumbnail);
-  }, [product.id, product.thumbnail]);
 
   return (
     <div className="p-4 max-w-6xl mx-auto">

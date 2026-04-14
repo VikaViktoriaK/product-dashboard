@@ -35,6 +35,7 @@ const ProductDetailPage = () => {
 
   return (
     <ProductDetail
+      key={product.id}
       product={product}
       similarProducts={similarProducts}
       isLoadingSimilar={isSimilarLoading}
