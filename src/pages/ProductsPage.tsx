@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import type { ProductsQueryParams } from "../types/product";
 import { ProductFilters } from "../components/ProductFilters/ProductFilters";
 import { useProductsQuery } from "../hooks/useProducts.ts";
+import { ROUTE_PATHS } from "../router/routePaths";
 
 const ProductsPage = () => {
   const [filters, setFilters] = useState<Partial<ProductsQueryParams>>({});
@@ -69,7 +70,7 @@ const ProductsPage = () => {
                   <td className="p-3">{product.stock}</td>
                   <td className="p-3">
                     <Link
-                      to="/product/$id"
+                      to={ROUTE_PATHS.productDetail}
                       params={{ id: String(product.id) }}
                       preload="intent"
                       className="text-blue-500 hover:underline"

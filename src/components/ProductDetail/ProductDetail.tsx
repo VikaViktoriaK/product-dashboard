@@ -1,6 +1,7 @@
 import { type FC, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import type { Product } from "../../types/product";
+import { ROUTE_PATHS } from "../../router/routePaths";
 
 interface ProductDetailProps {
   product: Product;
@@ -99,7 +100,7 @@ const ProductDetail: FC<ProductDetailProps> = ({
             {similarProducts.map((p) => (
               <Link
                 key={p.id}
-                to="/product/$id"
+                to={ROUTE_PATHS.productDetail}
                 params={{ id: String(p.id) }}
                 preload="intent"
                 className="border rounded p-4 hover:shadow-lg transition block"

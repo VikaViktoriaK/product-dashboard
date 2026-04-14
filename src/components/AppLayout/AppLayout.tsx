@@ -5,13 +5,14 @@ import {
   useRouterState,
 } from "@tanstack/react-router";
 import Container from "../Container/Container";
+import { ROUTE_PATHS } from "../../router/routePaths";
 
 const AppLayout = () => {
   const navigate = useNavigate();
   const pathname = useRouterState({
     select: (state) => state.location.pathname,
   });
-  const isProductsPage = pathname === "/";
+  const isProductsPage = pathname === ROUTE_PATHS.products;
 
   return (
     <Container className="px-4 py-4 min-h-screen">
@@ -19,7 +20,7 @@ const AppLayout = () => {
         <div className="mb-4">
           <button
             type="button"
-            onClick={() => navigate({ to: "/" })}
+            onClick={() => navigate({ to: ROUTE_PATHS.products })}
             className="px-3 py-2 border rounded-lg hover:bg-gray-100 transition-colors"
           >
             ← Back to products
@@ -31,7 +32,7 @@ const AppLayout = () => {
         <aside className="border rounded-xl p-3 bg-white shadow-sm h-fit">
           <nav className="flex md:flex-col gap-2">
             <Link
-              to="/"
+              to={ROUTE_PATHS.products}
               preload="intent"
               className="px-3 py-2 border rounded-lg hover:bg-blue-600 transition-colors text-sm"
               activeProps={{
@@ -42,7 +43,7 @@ const AppLayout = () => {
             </Link>
 
             <Link
-              to="/chat"
+              to={ROUTE_PATHS.chat}
               preload="intent"
               className="px-3 py-2 border rounded-lg hover:bg-blue-600 transition-colors text-sm"
               activeProps={{
