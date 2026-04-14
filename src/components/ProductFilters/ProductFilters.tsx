@@ -1,7 +1,7 @@
-import { type FC, useState, useEffect, useRef } from "react";
+import { type FC, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { getProducts } from "../../api/products";
+import { productsQueryOptions } from "../../api/queryOptions";
 import { useDebounce } from "../../hooks/useDebounce";
 
 interface ProductFiltersProps {
@@ -27,9 +27,19 @@ export const ProductFilters: FC<ProductFiltersProps> = ({ onChange }) => {
   const debouncedSearch = useDebounce(searchTerm, 400);
 
   const { data: suggestions, isLoading: isSearching } = useQuery({
-    queryKey: ["products-search", debouncedSearch],
-    queryFn: () => getProducts({ search: debouncedSearch, limit: 5 }),
+    ...productsQueryOptions({ search: debouncedSearch, limit: 5 }),
+    enabled: debouncedSearch.trim().length > 1,
   });
+
+  const priceError = useMemo(() => {
+    if (minPrice === "" || maxPrice === "") {
+      return null;
+    }
+
+    return minPrice > maxPrice
+      ? "Min price cannot be greater than max price"
+      : null;
+  }, [minPrice, maxPrice]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -45,10 +55,10 @@ export const ProductFilters: FC<ProductFiltersProps> = ({ onChange }) => {
   }, []);
 
   const handleApply = () => {
-    if (minPrice !== "" && maxPrice !== "" && minPrice > maxPrice) {
-      alert("Min price cannot be greater than max price");
+    if (priceError) {
       return;
     }
+
     onChange({
       category: category || undefined,
       minPrice: minPrice === "" ? undefined : minPrice,
@@ -178,6 +188,9 @@ export const ProductFilters: FC<ProductFiltersProps> = ({ onChange }) => {
               min={0}
             />
           </div>
+          {priceError && (
+            <p className="mt-1 text-sm text-red-500">{priceError}</p>
+          )}
         </div>
       </div>
 
